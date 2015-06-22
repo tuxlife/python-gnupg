@@ -1285,6 +1285,36 @@ know, maybe you shouldn't be doing it in the first place.
                     log.debug("new (from decryption): %r" % ddata)
                     self.assertEqual(data, ddata)
 
+    def test_file_encryption_and_decryption_utf8(self):
+        """Test that encryption/decryption to/from file works."""
+        with open(os.path.join(_files, 'kat.sec')) as katsec:
+            self.gpg.import_keys(katsec.read())
+
+        kat = self.gpg.list_keys('kat')[0]['fingerprint']
+
+        enc_outf = os.path.join(self.gpg.homedir, 'to-b.gpg')
+
+        # XXX not used atm
+        # dec_outf = os.path.join(self.gpg.homedir, 'to-b.txt')
+
+        message_file = os.path.join(_files, 'UTF-8-demo.txt')
+        with open(message_file) as msg:
+            data = msg.read()
+            ## GnuPG seems to ignore the output directive...
+            edata = self.gpg.encrypt(data, kat, output=enc_outf)
+            with open(enc_outf, 'w+') as enc:
+                enc.write(str(edata))
+
+            with open(enc_outf) as enc2:
+                fdata = enc2.read()
+                ddata = self.gpg.decrypt(fdata, passphrase="overalls").data
+
+                if ddata != data:
+                    log.debug("data was: %r" % data)
+                    log.debug("new (from filehandle): %r" % fdata)
+                    log.debug("new (from decryption): %r" % ddata)
+                    self.assertEqual(data, ddata)
+
     def test_encryption_to_filename(self):
         """Test that ``encrypt(..., output='somefile.gpg')`` is successful."""
         with open(os.path.join(_files, 'kat.sec')) as katsec:
