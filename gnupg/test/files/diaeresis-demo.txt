@@ -1,0 +1,5 @@
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+äöü
+ÄÖÜ
+
