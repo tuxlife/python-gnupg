@@ -1298,6 +1298,7 @@ know, maybe you shouldn't be doing it in the first place.
         # dec_outf = os.path.join(self.gpg.homedir, 'to-b.txt')
 
         message_file = os.path.join(_files, 'UTF-8-demo.txt')
+        self.gpg._encoding = 'utf-8'
         with open(message_file) as msg:
             data = msg.read()
             ## GnuPG seems to ignore the output directive...
@@ -1328,6 +1329,7 @@ know, maybe you shouldn't be doing it in the first place.
         # dec_outf = os.path.join(self.gpg.homedir, 'to-b.txt')
 
         message_file = os.path.join(_files, 'diaeresis-demo.txt')
+        self.gpg._encoding = 'utf-8'
         with open(message_file) as msg:
             data = msg.read()
             ## GnuPG seems to ignore the output directive...
